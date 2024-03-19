@@ -3,7 +3,6 @@ const collection = require("./mongo")
 const cors = require("cors")
 const app = express()
 app.use(express.json())
-// app.use(express.urlencoded({ extended: true }))
 
 app.use(cors({
     origin: ['http://localhost:3000'],
@@ -13,12 +12,12 @@ app.use(cors({
 
 
 app.post("/", async (req, res) => {
-    const { email, password } = req.body
+    const { Email, Password } = req.body
 
 
     const check = await collection.findOne({
-        email: email,
-        password: password
+        Email: Email,
+        Password: Password
     })
 
     if (check) {
@@ -34,22 +33,23 @@ app.post("/", async (req, res) => {
 
 
 app.post("/register", async (req, res) => {
-    const { email, password } = req.body
+    const { Name, Email, Mobile, Password } = req.body
 
     const data = {
-        email: email,
-        password: password
+        Name: Name,
+        Email: Email,
+        Mobile: Mobile,
+        Password: Password
     }
 
     const check = await collection.findOne({
-        email: email
+        Email: Email
     })
 
     if (check) {
         res.json("exist")
     }
     else {
-
         await collection.insertMany([data])
         res.json("notexist")
 
